@@ -1,8 +1,3 @@
-<script setup>
-import { products } from '@/data-seed'
-import NotFoundVue from '../errors/NotFound.vue'
-</script>
-
 <template>
   <div id="page-wrap" v-if="product">
     <div id="img-wrap">
@@ -20,6 +15,9 @@ import NotFoundVue from '../errors/NotFound.vue'
 </template>
 
 <script>
+import { products } from '@/data-seed'
+import NotFoundVue from '../errors/NotFound.vue'
+
 export default {
   data() {
     return {
