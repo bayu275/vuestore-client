@@ -1,7 +1,7 @@
 <template>
   <div id="page-wrap" v-if="product">
     <div id="img-wrap">
-      <img :src="product.imageUrl" :alt="product.name" />
+      <img :src="`http://localhost:3000${product.imageUrl}`" :alt="product.name" />
     </div>
     <div id="product-detail">
       <h1>{{ product.name }}</h1>
@@ -15,18 +15,23 @@
 </template>
 
 <script>
-import { products } from '@/data-seed'
 import NotFoundVue from '../errors/NotFound.vue'
 
 export default {
   data() {
     return {
-      products
+      product: {}
     }
   },
-  computed: {
-    product() {
-      return products.find((product) => product.id === this.$route.params.id)
+  async created() {
+    const code = this.$route.params.id
+    try {
+      const results = await fetch(`http://localhost:3000/api/products/${code}`).then((res) =>
+        res.json()
+      )
+      this.product = results.product
+    } catch (error) {
+      console.log(error)
     }
   },
   components: {

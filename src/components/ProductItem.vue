@@ -1,9 +1,9 @@
 <template>
   <div class="product-item">
-    <img :src="product.imageUrl" :alt="product.name" />
+    <img :src="`http://localhost:3000${product.imageUrl}`" :alt="product.name" />
     <h3 class="product-name">{{ product.name }}</h3>
     <p class="product-price">Rp{{ product.price }}</p>
-    <router-link :to="{ name: 'ProductDetail', params: { id: product.id } }">
+    <router-link :to="{ name: 'ProductDetail', params: { id: product.code } }">
       <button>View Details</button>
     </router-link>
   </div>

@@ -1,7 +1,3 @@
-<script setup>
-import NavbarItem from './components/NavbarItem.vue'
-</script>
-
 <template>
   <div>
     <NavbarItem />
@@ -10,6 +6,8 @@ import NavbarItem from './components/NavbarItem.vue'
 </template>
 
 <script>
+import NavbarItem from './components/NavbarItem.vue'
+
 export default {
   name: 'App',
   components: {

@@ -7,12 +7,20 @@
 </template>
 
 <script>
-import { products } from '@/data-seed'
 import ProductItem from '@/components/ProductItem.vue'
+
 export default {
   data() {
     return {
-      products
+      products: []
+    }
+  },
+  async created() {
+    try {
+      const results = await fetch('http://localhost:3000/api/products').then((res) => res.json())
+      this.products = results.data
+    } catch (error) {
+      console.log(error)
     }
   },
   components: {
