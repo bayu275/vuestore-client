@@ -1,5 +1,6 @@
 <template>
   <div id="page-wrap" v-if="product">
+    <h4 v-if="notif" class="notif">item added to cart</h4>
     <div id="img-wrap">
       <img :src="`http://localhost:3000${product.imageUrl}`" :alt="product.name" />
     </div>
@@ -7,7 +8,7 @@
       <h1>{{ product.name }}</h1>
       <h3 id="price">Rp{{ product.price }}</h3>
       <p>Average rating : {{ product.averageRating }}</p>
-      <button id="add-to-cart">Add to cart</button>
+      <button id="add-to-cart" @click="addToCart(product.code)">Add to cart</button>
       <p>{{ product.description }}</p>
     </div>
   </div>
@@ -20,7 +21,8 @@ import NotFoundVue from '../errors/NotFound.vue'
 export default {
   data() {
     return {
-      product: {}
+      product: {},
+      notif: false
     }
   },
   async created() {
@@ -32,6 +34,22 @@ export default {
       this.product = results.product
     } catch (error) {
       console.log(error)
+    }
+  },
+  methods: {
+    async addToCart(code) {
+      try {
+        await fetch('http://localhost:3000/api/orders/user/1/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ product: code })
+        })
+        this.notif = true
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
   components: {

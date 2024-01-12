@@ -1,20 +1,47 @@
 <template>
   <div id="page-wrap">
     <h1>Shopping Cart</h1>
-    <CartItem v-for="item in cartItems" :key="item.id" :item="item" />
+    <CartItem
+      v-for="item in cartItems"
+      :key="item.id"
+      :item="item"
+      @remove="removeFromCart($event)"
+    />
     <h3 id="total-price">Total : Rp{{ totalPrice }}</h3>
     <button id="checkout-button">Checkout</button>
   </div>
 </template>
 
 <script>
-import { cartItems } from '@/data-seed'
 import CartItem from '@/components/CartItem.vue'
 
 export default {
   data() {
     return {
-      cartItems
+      cartItems: []
+    }
+  },
+  async created() {
+    try {
+      const results = await fetch('http://localhost:3000/api/orders/user/1').then((res) =>
+        res.json()
+      )
+      let data = results.data.map((item) => item.products).flat()
+      this.cartItems = data
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  methods: {
+    async removeFromCart(code) {
+      try {
+        await fetch(`http://localhost:3000/api/orders/user/1/product/${code}`, {
+          method: 'DELETE'
+        })
+        this.cartItems = this.cartItems.filter((item) => item.code !== code)
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
   computed: {
